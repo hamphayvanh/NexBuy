@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexBuy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; }
+    .header { background: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .hero { height: 220px; background: url('https://picsum.photos/id/1015/1200/400') center/cover; position: relative; color: white; text-align: center; display: flex; align-items: center; justify-content: center; }
+    .balance-bar { background: white; padding: 15px; display: flex; justify-content: space-around; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .action { text-align: center; padding: 20px 10px; background: white; margin: 10px 15px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); cursor: pointer; }
+    .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -3px 10px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h2 style="color:#0078ff; margin:0;">NexBuy</h2>
+  </div>
+
+  <div class="hero">
+    <div style="background:rgba(0,0,0,0.5); padding:15px 25px; border-radius:12px;">
+      <h2>Discover Amazing Deals</h2>
+      <p>Save Big Every Day</p>
+    </div>
+  </div>
+
+  <div style="background:#e3f2fd; padding:12px; text-align:center; color:#0078ff;">
+    CONGRATULATIONS TO 12678**** WHO EARNED $579.80 WELCOME TO NEXBUY!
+  </div>
+
+  <div class="balance-bar">
+    <div>
+      <strong id="balanceHome">$0.00</strong><br>
+      <small>Current Balance</small>
+    </div>
+    <div>
+      <strong>$0.00</strong><br>
+      <small>Commission Earned</small>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 15px;">
+    <div class="action" onclick="location.href='recharge.html'">↑<br><strong>RECHARGE</strong></div>
+    <div class="action" onclick="location.href='withdrawal.html'">↓<br><strong>WITHDRAWAL</strong></div>
+    <div class="action" onclick="location.href='account.html'">👤<br><strong>INVITE</strong></div>
+    <div class="action" onclick="location.href='service.html'">🎧<br><strong>SERVICE</strong></div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item active">🏠<br>Home</a>
+    <a href="order.html">📋<br>Order</a>
+    <a href="start.html">✅<br>Start</a>
+    <a href="service.html">🎧<br>Service</a>
+    <a href="account.html">👤<br>Account</a>
+  </div>
+
+  <script>
+    function updateBalance() {
+      const balance = localStorage.getItem('balance') || 0;
+      document.getElementById('balanceHome').textContent = '$' + parseFloat(balance).toFixed(2);
+    }
+    window.onload = updateBalance;
+  </script>
+</body>
+</html>

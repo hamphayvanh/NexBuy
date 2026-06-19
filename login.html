@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexBuy - Login / Sign Up</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #0078ff, #003087); margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; }
+    .box { background: white; padding: 30px; border-radius: 16px; width: 90%; max-width: 420px; box-shadow: 0 15px 35px rgba(0,0,0,0.3); text-align: center; }
+    .logo { font-size: 32px; font-weight: bold; color: #0078ff; margin-bottom: 10px; }
+    select, input { width: 100%; padding: 14px; margin: 8px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+    button { width: 100%; padding: 15px; background: #0078ff; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    .toggle { margin-top: 20px; color: #0078ff; cursor: pointer; font-size: 15px; }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+    <div class="logo">NexBuy</div>
+    <h2 id="formTitle">Login</h2>
+
+    <!-- Login Form -->
+    <div id="loginForm">
+      <input type="text" id="phoneLogin" placeholder="Phone Number" />
+      <input type="password" id="passLogin" placeholder="Password" />
+      <button onclick="login()">Login</button>
+    </div>
+
+    <!-- Sign Up Form -->
+    <div id="signupForm" style="display:none;">
+      <select id="countryCode">
+        <option value="+1">+1 (USA/Canada)</option>
+      </select>
+      <input type="text" id="phoneSignup" placeholder="Phone Number" />
+      <input type="email" id="emailSignup" placeholder="Email Address" />
+      <input type="password" id="passSignup" placeholder="Password" />
+      <input type="text" id="inviteCode" placeholder="Invitation Code (Required)" />
+      <button onclick="signup()">Sign Up</button>
+    </div>
+
+    <div class="toggle" id="toggleText" onclick="toggleForm()">
+      Don't have an account? <strong>Sign Up</strong>
+    </div>
+  </div>
+
+  <script>
+    let isLogin = true;
+
+    function toggleForm() {
+      isLogin = !isLogin;
+      document.getElementById('loginForm').style.display = isLogin ? 'block' : 'none';
+      document.getElementById('signupForm').style.display = isLogin ? 'none' : 'block';
+      document.getElementById('formTitle').textContent = isLogin ? 'Login' : 'Create Account';
+      document.getElementById('toggleText').innerHTML = isLogin 
+        ? "Don't have an account? <strong>Sign Up</strong>" 
+        : "Already have an account? <strong>Login</strong>";
+    }
+
+    function login() {
+      const phone = document.getElementById('phoneLogin').value.trim();
+      if (phone) {
+        localStorage.setItem('currentUser', phone);
+        alert("✅ Login Successful!");
+        window.location.href = 'index.html';
+      } else {
+        alert("Please enter your phone number");
+      }
+    }
+
+    function signup() {
+      const phone = document.getElementById('phoneSignup').value.trim();
+      const email = document.getElementById('emailSignup').value.trim();
+      const invite = document.getElementById('inviteCode').value.trim().toUpperCase();
+
+      if (!phone || !email || !invite) {
+        alert("All fields are required!");
+        return;
+      }
+
+      let validCodes = JSON.parse(localStorage.getItem('inviteCodes')) || [];
+      if (!validCodes.some(c => c.toUpperCase() === invite)) {
+        alert("❌ Invalid Invitation Code!");
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem('adminUsers')) || [];
+      users.push({ phone: phone, email: email, balance: 0 });
+      localStorage.setItem('adminUsers', JSON.stringify(users));
+
+      localStorage.setItem('currentUser', phone);
+      alert("✅ Account Created Successfully!");
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>

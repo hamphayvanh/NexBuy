@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account - NexBuy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 0; padding-bottom: 80px; }
+    .header { background: linear-gradient(135deg, #0078ff, #003087); color: white; padding: 30px 20px; text-align: center; }
+    .avatar { font-size: 70px; margin-bottom: 10px; }
+    .phone { font-size: 22px; font-weight: bold; }
+    .vip-badge { background: rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 20px; display: inline-block; margin-top: 8px; font-size: 14px; }
+
+    .balance-section { background: white; margin: 15px; padding: 20px; border-radius: 12px; box-shadow: 0 3px 12px rgba(0,0,0,0.1); display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .balance-item { text-align: center; }
+    .balance-item strong { font-size: 24px; color: #0078ff; display: block; }
+
+    .menu { margin: 15px; }
+    .menu-item { 
+      background: white; 
+      padding: 16px 20px; 
+      margin-bottom: 8px; 
+      border-radius: 12px; 
+      display: flex; 
+      align-items: center; 
+      gap: 15px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08); 
+      cursor: pointer; 
+    }
+
+    .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -3px 10px rgba(0,0,0,0.1); }
+    .nav-item { text-align: center; color: #666; text-decoration: none; font-size: 12px; }
+    .nav-item.active { color: #0078ff; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="avatar">👤</div>
+    <div class="phone" id="userPhone">2034567899</div>
+    <div class="vip-badge">VIP0</div>
+  </div>
+
+  <div class="balance-section">
+    <div class="balance-item">
+      Current balance<br>
+      <strong id="currentBalance">$0.00</strong>
+    </div>
+    <div class="balance-item">
+      Frozen<br>
+      <strong>$0</strong>
+    </div>
+    <div class="balance-item">
+      Credit<br>
+      <strong>100</strong>
+    </div>
+    <div class="balance-item">
+      Invitation Code<br>
+      <strong id="inviteCode">NEXYEUG5A</strong>
+    </div>
+  </div>
+
+  <div class="menu">
+    <h4 style="padding:0 20px 10px; color:#666;">Settings</h4>
+    <div class="menu-item" onclick="window.location.href='profile.html'"><i class="fas fa-user"></i> Profile</div>
+    <div class="menu-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</div>
+    <div class="menu-item" onclick="window.location.href='level.html'"><i class="fas fa-chart-bar"></i> Level information</div>
+    <div class="menu-item" onclick="window.location.href='change-password.html'"><i class="fas fa-lock"></i> Change password</div>
+    <div class="menu-item" onclick="window.location.href='payment-password.html'"><i class="fas fa-key"></i> Payment password</div>
+  </div>
+
+  <div class="menu">
+    <h4 style="padding:0 20px 10px; color:#666;">Others</h4>
+    <div class="menu-item" onclick="window.location.href='terms.html'"><i class="fas fa-info-circle"></i> Terms and Conditions</div>
+    <div class="menu-item" onclick="alert('Language: English')"><i class="fas fa-globe"></i> Language</div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item">🏠<br>Home</a>
+    <a href="order.html" class="nav-item">📋<br>Order</a>
+    <a href="start.html" class="nav-item">✅<br>Start</a>
+    <a href="service.html" class="nav-item">🎧<br>Service</a>
+    <a href="account.html" class="nav-item active">👤<br>Account</a>
+  </div>
+
+  <script>
+    function logout() {
+      if(confirm("Logout from account?")) {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'login.html';
+      }
+    }
+
+    window.onload = () => {
+      const phone = localStorage.getItem('currentUser') || "2034567899";
+      document.getElementById('userPhone').textContent = phone;
+      document.getElementById('inviteCode').textContent = "NEX" + Math.random().toString(36).substring(2,8).toUpperCase();
+    };
+  </script>
+</body>
+</html>

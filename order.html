@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order - NexBuy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 0; padding-bottom: 80px; }
+    .header { background: #003087; color: white; padding: 15px; text-align: center; font-size: 21px; font-weight: bold; }
+    .tabs { display: flex; background: white; border-bottom: 1px solid #ddd; }
+    .tab { flex: 1; padding: 15px; text-align: center; cursor: pointer; font-weight: 500; color: #666; }
+    .tab.active { color: #0078ff; border-bottom: 3px solid #0078ff; }
+    .order-card { background: white; margin: 12px 15px; border-radius: 12px; padding: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); display: flex; gap: 15px; }
+    .order-card img { width: 70px; height: 70px; object-fit: cover; border-radius: 8px; }
+    .order-info { flex: 1; }
+    .status { padding: 4px 12px; border-radius: 20px; font-size: 12px; float: right; font-weight: bold; }
+    .completed { background: #28a745; color: white; }
+    .total { font-size: 18px; font-weight: bold; color: #0078ff; text-align: right; margin-top: 8px; }
+    .empty { text-align: center; padding: 80px 20px; color: #666; }
+    .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -3px 10px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+
+  <div class="header">ORDER</div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(0)">ALL</div>
+    <div class="tab" onclick="switchTab(1)">PENDING</div>
+    <div class="tab" onclick="switchTab(2)">COMPLETED</div>
+    <div class="tab" onclick="switchTab(3)">CANCELED</div>
+  </div>
+
+  <div id="ordersContent"></div>
+
+  <div class="bottom-nav">
+    <a href="index.html">🏠<br>Home</a>
+    <a href="order.html" class="nav-item active">📋<br>Order</a>
+    <a href="start.html">✅<br>Start</a>
+    <a href="service.html">🎧<br>Service</a>
+    <a href="account.html">👤<br>Account</a>
+  </div>
+
+  <script>
+    function switchTab(n) {
+      document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === n));
+      loadOrders(n);
+    }
+
+    function loadOrders(tab) {
+      let orders = JSON.parse(localStorage.getItem('userOrders')) || [];
+      const content = document.getElementById('ordersContent');
+
+      if (orders.length === 0) {
+        content.innerHTML = `<div class="empty"><h3>No Orders Yet</h3><p>Complete orders from Start page to see them here.</p></div>`;
+        return;
+      }
+
+      let html = '';
+      orders.forEach(order => {
+        if (tab === 0 || (tab === 2 && order.status === "COMPLETED")) {
+          html += `
+            <div class="order-card">
+              <img src="https://picsum.photos/id/64/100/100" alt="">
+              <div class="order-info">
+                <strong>${order.name}</strong><br>
+                <small>ORDER COMMISSION</small><br>
+                <span style="color:#28a745; font-weight:bold;">+$${order.commission}</span>
+                <p style="font-size:13px; color:#666;">${order.date}</p>
+              </div>
+              <div style="text-align:right;">
+                <span class="status completed">COMPLETED</span><br><br>
+                <div class="total">$${order.total}</div>
+              </div>
+            </div>`;
+        }
+      });
+
+      content.innerHTML = html || `<div class="empty"><h3>No Orders in this tab</h3></div>`;
+    }
+
+    window.onload = () => loadOrders(0);
+  </script>
+</body>
+</html>

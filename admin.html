@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - NexBuy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; }
+    .header { background: #003087; color: white; padding: 18px; text-align: center; font-size: 22px; font-weight: bold; }
+    .tabs { display: flex; background: white; }
+    .tab { flex: 1; padding: 16px; text-align: center; cursor: pointer; font-weight: 500; }
+    .tab.active { background: #0078ff; color: white; }
+    .content { padding: 20px; }
+    .card { background: white; padding: 20px; border-radius: 12px; margin-bottom: 20px; box-shadow: 0 3px 12px rgba(0,0,0,0.1); }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+    .btn { padding: 8px 14px; background: #0078ff; color: white; border: none; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <div class="header">ADMIN DASHBOARD</div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab(0)">Dashboard</div>
+    <div class="tab" onclick="switchTab(1)">Users</div>
+    <div class="tab" onclick="switchTab(2)">Wallet</div>
+    <div class="tab" onclick="switchTab(3)">Tickets</div>
+    <div class="tab" onclick="switchTab(4)">Invites</div>
+  </div>
+
+  <div class="content" id="tabContent"></div>
+
+  <script>
+    function switchTab(n) {
+      document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === n));
+      renderTab(n);
+    }
+
+    function renderTab(n) {
+      const content = document.getElementById('tabContent');
+      
+      if (n === 0) { // Dashboard
+        content.innerHTML = `
+          <div class="card">
+            <h3>Platform Overview</h3>
+            <p><strong>Total Users:</strong> <span id="totalUsers">0</span></p>
+            <p><strong>Total Balance:</strong> $<span id="totalBalance">0.00</span></p>
+          </div>`;
+        updateDashboardStats();
+      } 
+      else if (n === 1) { // Users
+        loadUsers();
+      } 
+      else if (n === 3) { // Tickets
+        loadTickets();
+      } 
+      else {
+        content.innerHTML = `<div class="card"><h3>Tab ${n}</h3><p>Coming soon...</p></div>`;
+      }
+    }
+
+    function updateDashboardStats() {
+      const users = JSON.parse(localStorage.getItem('adminUsers')) || [];
+      document.getElementById('totalUsers').textContent = users.length;
+      const totalBal = users.reduce((sum, u) => sum + (parseFloat(u.balance) || 0), 0);
+      document.getElementById('totalBalance').textContent = totalBal.toFixed(2);
+    }
+
+    function loadUsers() {
+      let users = JSON.parse(localStorage.getItem('adminUsers')) || [];
+      let html = `<div class="card"><h3>Users (${users.length})</h3>`;
+      if (users.length === 0) {
+        html += `<p>No users yet. Create accounts from signup.</p>`;
+      } else {
+        html += `<table><tr><th>Phone</th><th>Balance</th><th>Action</th></tr>`;
+        users.forEach((user, i) => {
+          html += `
+            <tr>
+              <td>${user.phone}</td>
+              <td>$${parseFloat(user.balance || 0).toFixed(2)}</td>
+              <td><button class="btn" onclick="editBalance(${i})">Edit Balance</button></td>
+            </tr>`;
+        });
+        html += `</table>`;
+      }
+      document.getElementById('tabContent').innerHTML = html;
+    }
+
+    function editBalance(i) {
+      let users = JSON.parse(localStorage.getItem('adminUsers')) || [];
+      const newBal = prompt("Enter new balance for " + users[i].phone, users[i].balance);
+      if (newBal !== null) {
+        const numBal = parseFloat(newBal);
+        if (!isNaN(numBal)) {
+          users[i].balance = numBal;
+          localStorage.setItem('adminUsers', JSON.stringify(users));
+          localStorage.setItem('balance', numBal);   // ← Important: Sync main balance
+          loadUsers();
+          alert("✅ Balance updated successfully!");
+        }
+      }
+    }
+
+    function loadTickets() {
+      let tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+      let html = `<div class="card"><h3>Customer Tickets (${tickets.length})</h3>`;
+      if (tickets.length === 0) {
+        html += `<p>No tickets yet.</p>`;
+      } else {
+        tickets.forEach(t => {
+          html += `
+            <div style="background:#fff; padding:15px; margin:10px 0; border-radius:10px; border-left:4px solid #0078ff;">
+              <strong>${t.user}</strong> - ${t.time}<br>
+              ${t.message}<br>
+              <small>Status: ${t.status}</small>
+            </div>`;
+        });
+      }
+      document.getElementById('tabContent').innerHTML = html;
+    }
+
+    window.onload = () => switchTab(0);
+  </script>
+</body>
+</html>

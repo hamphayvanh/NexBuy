@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Withdrawal - NexBuy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 0; padding-bottom: 80px; }
+    .header { background: #003087; color: white; padding: 15px; text-align: center; font-size: 20px; }
+    .container { padding: 15px; }
+    .card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 15px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+    input, select { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+    .confirm-btn { width: 100%; padding: 16px; background: #0078ff; color: white; border: none; border-radius: 10px; font-size: 18px; font-weight: bold; margin-top: 20px; }
+    .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -3px 10px rgba(0,0,0,0.1); }
+  </style>
+</head>
+<body>
+
+  <div class="header">Withdrawal</div>
+
+  <div class="container">
+    <div class="card">
+      <strong>Current Balance:</strong> <span id="currentBalance" style="color:#0078ff; font-size:20px;">$0.00</span>
+    </div>
+
+    <div class="card">
+      <label><strong>Withdrawal Amount (USD)</strong></label>
+      <input type="number" id="amount" placeholder="Enter amount" value="150">
+
+      <label style="margin-top:15px;"><strong>Payment Method</strong></label>
+      <select id="method">
+        <option>USDT (TRC20)</option>
+        <option>Bank Transfer</option>
+      </select>
+
+      <label style="margin-top:15px;"><strong>Wallet Address / Account</strong></label>
+      <input type="text" id="wallet" placeholder="Enter your USDT address or bank details">
+    </div>
+
+    <button class="confirm-btn" onclick="confirmWithdrawal()">Confirm Withdrawal</button>
+    
+    <p style="text-align:center; color:#666; margin-top:15px; font-size:14px;">
+      Minimum withdrawal: $150
+    </p>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="index.html">🏠<br>Home</a>
+    <a href="order.html">📋<br>Order</a>
+    <a href="start.html">✅<br>Start</a>
+    <a href="service.html">🎧<br>Service</a>
+    <a href="account.html">👤<br>Account</a>
+  </div>
+
+  <script>
+    window.onload = () => {
+      const balance = localStorage.getItem('balance') || 0;
+      document.getElementById('currentBalance').textContent = '$' + parseFloat(balance).toFixed(2);
+    };
+
+    function confirmWithdrawal() {
+      const amount = parseFloat(document.getElementById('amount').value);
+      if (!amount || amount < 150) {
+        alert("Minimum withdrawal amount is $150");
+        return;
+      }
+
+      const wallet = document.getElementById('wallet').value.trim();
+      if (!wallet) {
+        alert("Please enter your wallet address or bank details");
+        return;
+      }
+
+      // Save pending message and go to Service
+      localStorage.setItem('pendingMessage', `I want to withdraw $${amount} USD to ${wallet}`);
+      window.location.href = 'service.html';
+    }
+  </script>
+</body>
+</html>

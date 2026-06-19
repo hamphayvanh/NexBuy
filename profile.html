@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile Details - NexBuy</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 0; padding-bottom: 80px; }
+    .header { 
+      background: linear-gradient(135deg, #0078ff, #003087); 
+      color: white; 
+      padding: 50px 20px 40px; 
+      text-align: center; 
+    }
+    .avatar { font-size: 80px; margin-bottom: 12px; }
+    .phone { font-size: 26px; font-weight: bold; }
+    .vip { background: rgba(255,255,255,0.25); padding: 6px 22px; border-radius: 30px; display: inline-block; margin-top: 10px; font-size: 15px; }
+
+    .details { 
+      background: white; 
+      margin: 20px 15px; 
+      border-radius: 16px; 
+      padding: 20px; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+    }
+    .row { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      padding: 18px 0; 
+      border-bottom: 1px solid #eee; 
+    }
+    .row:last-child { border-bottom: none; }
+    .label { color: #555; font-weight: 500; }
+    .value { font-weight: bold; text-align: right; max-width: 55%; word-break: break-all; }
+
+    .copy-btn { 
+      background: #0078ff; 
+      color: white; 
+      border: none; 
+      padding: 6px 12px; 
+      border-radius: 6px; 
+      font-size: 13px; 
+      cursor: pointer; 
+      margin-left: 8px; 
+    }
+
+    .bottom-nav { 
+      position: fixed; 
+      bottom: 0; 
+      width: 100%; 
+      background: white; 
+      display: flex; 
+      justify-content: space-around; 
+      padding: 10px 0; 
+      box-shadow: 0 -3px 10px rgba(0,0,0,0.1); 
+    }
+    .nav-item { text-align: center; color: #666; text-decoration: none; font-size: 12px; }
+    .nav-item.active { color: #0078ff; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="avatar">👤</div>
+    <div class="phone" id="phone">2034567899</div>
+    <div class="vip">VIP0</div>
+  </div>
+
+  <div class="details">
+    <div class="row">
+      <div class="label">TELEPHONE NUMBER</div>
+      <div class="value" id="phone2">2034567899</div>
+    </div>
+    <div class="row">
+      <div class="label">INVITATION CODE</div>
+      <div style="display:flex; align-items:center;">
+        <span class="value" id="inviteCode">NEX346OVJ</span>
+        <button class="copy-btn" onclick="copyText('inviteCode')">Copy</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="label">REFERRAL LINK</div>
+      <div style="display:flex; align-items:center; flex-direction:column; align-items:flex-end;">
+        <span class="value" id="referralLink" style="font-size:13.5px;">https://nexbuy.com/signup?invite=NEX346OVJ</span>
+        <button class="copy-btn" onclick="copyText('referralLink')">Copy</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <a href="index.html" class="nav-item">🏠<br>Home</a>
+    <a href="order.html" class="nav-item">📋<br>Order</a>
+    <a href="start.html" class="nav-item">✅<br>Start</a>
+    <a href="service.html" class="nav-item">🎧<br>Service</a>
+    <a href="account.html" class="nav-item">👤<br>Account</a>
+  </div>
+
+  <script>
+    function copyText(elementId) {
+      const text = document.getElementById(elementId).textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = event.target;
+        const originalText = btn.textContent;
+        btn.textContent = "Copied!";
+        setTimeout(() => btn.textContent = originalText, 2000);
+      });
+    }
+
+    // Load user data
+    window.onload = () => {
+      const phone = localStorage.getItem('currentUser') || "2034567899";
+      document.getElementById('phone').textContent = phone;
+      document.getElementById('phone2').textContent = phone;
+      
+      const code = "NEX" + Math.random().toString(36).substring(2,8).toUpperCase();
+      document.getElementById('inviteCode').textContent = code;
+      document.getElementById('referralLink').textContent = `https://nexbuy.com/signup?invite=${code}`;
+    };
+  </script>
+</body>
+</html>
