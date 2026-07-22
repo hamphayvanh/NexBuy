@@ -21,6 +21,7 @@
       display: flex; 
       justify-content: space-between; 
       align-items: center;
+      cursor: pointer;
     }
     .vip0 { background: #e3f2fd; }
     .vip1 { background: #fff9c4; }
@@ -61,11 +62,11 @@
     </div>
   </div>
 
-  <!-- VIP Section - Closer to Reference -->
+  <!-- Clickable VIP Section -->
   <div class="vip-section">
     <h3 style="padding:0 15px 10px; margin:0; font-weight:600;">MEMBER BENEFITS</h3>
     
-    <div class="vip-card vip0">
+    <div class="vip-card vip0" onclick="selectVIP(0)">
       <div>
         <div class="vip-title" style="color:#0078ff;">VIP 0 <small style="color:#555;">(Deposit 0)</small></div>
         <small>DAILY ORDERS: 38<br>COMMISSION RATE: 1%</small>
@@ -73,7 +74,7 @@
       <div class="crown">👑</div>
     </div>
 
-    <div class="vip-card vip1">
+    <div class="vip-card vip1" onclick="selectVIP(1)">
       <div>
         <div class="vip-title" style="color:#f57f17;">VIP 1 <small style="color:#555;">(Deposit 1000)</small></div>
         <small>DAILY ORDERS: 43<br>COMMISSION RATE: 1.5%</small>
@@ -81,7 +82,7 @@
       <div class="crown">👑</div>
     </div>
 
-    <div class="vip-card vip2">
+    <div class="vip-card vip2" onclick="selectVIP(2)">
       <div>
         <div class="vip-title" style="color:#c2185b;">VIP 2 <small style="color:#555;">(Deposit 3000)</small></div>
         <small>DAILY ORDERS: 51<br>COMMISSION RATE: 2%</small>
@@ -89,7 +90,7 @@
       <div class="crown">👑</div>
     </div>
 
-    <div class="vip-card vip3">
+    <div class="vip-card vip3" onclick="selectVIP(3)">
       <div>
         <div class="vip-title">VIP 3 <small style="color:#ddd;">(Deposit 5000)</small></div>
         <small>DAILY ORDERS: 60<br>COMMISSION RATE: 2.5%</small>
@@ -118,6 +119,20 @@
       const balance = localStorage.getItem('balance') || 0;
       document.getElementById('balanceHome').textContent = '$' + parseFloat(balance).toFixed(2);
     }
+
+    function selectVIP(level) {
+      const vipData = [
+        { level: 0, daily: 38, rate: 0.01 },
+        { level: 1, daily: 43, rate: 0.015 },
+        { level: 2, daily: 51, rate: 0.02 },
+        { level: 3, daily: 60, rate: 0.025 }
+      ];
+      
+      localStorage.setItem('userVIP', JSON.stringify(vipData[level]));
+      alert(`✅ You selected VIP ${level}! Going to Start page...`);
+      window.location.href = 'start.html';
+    }
+
     window.onload = updateBalance;
   </script>
 </body>
