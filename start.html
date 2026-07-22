@@ -91,7 +91,7 @@
       <p><strong>TOTAL:</strong> <span id="totalPrice" style="float:right; color:#0078ff; font-size:18px;">$124</span></p>
       <p><strong>ORDER COMMISSION:</strong> <span id="commission" style="float:right; color:#28a745;">+$1.24</span></p>
 
-      <button onclick="sendOrder()" style="width:100%; padding:16px; background:#0078ff; color:white; border:none; border-radius:10px; font-size:17px; margin-top:15px;">
+      <button onclick="confirmOrder()" style="width:100%; padding:16px; background:#0078ff; color:white; border:none; border-radius:10px; font-size:17px; margin-top:15px;">
         SEND ORDER
       </button>
     </div>
@@ -107,6 +107,7 @@
 
   <script>
     let userVIP = JSON.parse(localStorage.getItem('userVIP')) || { level: 0, daily: 38, rate: 0.01 };
+    let currentProduct = null;
 
     const products = [
       { name: "CHLOÉ AQUA SANDALS", price: 124, img: "https://picsum.photos/id/64/600/400", lucky: false },
@@ -132,30 +133,40 @@
     }
 
     function grabOrder() {
-      const randomProduct = products[Math.floor(Math.random() * products.length)];
-      let balance = parseFloat(localStorage.getItem('balance') || 0);
-
-      if (balance < randomProduct.price) {
-        alert(`❌ Insufficient balance! You need at least $${randomProduct.price} to start this order.`);
-        return;
-      }
-
-      document.getElementById('popupName').textContent = randomProduct.name;
-      document.getElementById('popupImg').src = randomProduct.img;
-      document.getElementById('unitPrice').textContent = '$' + randomProduct.price;
-      document.getElementById('totalPrice').textContent = '$' + randomProduct.price;
-      document.getElementById('commission').textContent = '+$' + (randomProduct.price * (randomProduct.lucky ? 0.2 : userVIP.rate)).toFixed(2);
+      currentProduct = products[Math.floor(Math.random() * products.length)];
+      
+      document.getElementById('popupName').textContent = currentProduct.name;
+      document.getElementById('popupImg').src = currentProduct.img;
+      document.getElementById('unitPrice').textContent = '$' + currentProduct.price;
+      document.getElementById('totalPrice').textContent = '$' + currentProduct.price;
+      document.getElementById('commission').textContent = '+$' + (currentProduct.price * (currentProduct.lucky ? 0.2 : userVIP.rate)).toFixed(2);
       document.getElementById('orderId').textContent = 'NEX-' + Math.floor(100000 + Math.random() * 900000);
       document.getElementById('grabPopup').style.display = 'flex';
     }
 
-    function closePopup() {
-      document.getElementById('grabPopup').style.display = 'none';
+    function confirmOrder() {
+      let balance = parseFloat(localStorage.getItem('balance') || 0);
+
+      if (balance < currentProduct.price) {
+        alert(`❌ Insufficient balance! You need at least $${currentProduct.price} to start this order.`);
+        closePopup();
+        return;
+      }
+
+      // Process the order
+      let commission = currentProduct.lucky 
+        ? currentProduct.price * (0.05 + Math.random() * 0.45) 
+        : currentProduct.price * userVIP.rate;
+
+      balance = balance - currentProduct.price + currentProduct.price + commission;
+      localStorage.setItem('balance', balance.toFixed(2));
+
+      alert(`✅ Order Completed!\nProduct: ${currentProduct.name}\nCommission Earned: $${commission.toFixed(2)}`);
+      closePopup();
     }
 
-    function sendOrder() {
-      alert("✅ Order Accepted Successfully!");
-      closePopup();
+    function closePopup() {
+      document.getElementById('grabPopup').style.display = 'none';
     }
 
     window.onload = () => {
