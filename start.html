@@ -9,7 +9,7 @@
     body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 0; padding-bottom: 80px; }
     .header { background: #003087; color: white; padding: 15px; text-align: center; font-size: 21px; font-weight: bold; }
     .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 15px; }
-    .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; }
+    .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; cursor: pointer; }
     .product-card img { width: 100%; height: 180px; object-fit: cover; }
     .product-name { padding: 12px; font-weight: 600; color: #333; }
     .big-button { 
@@ -24,7 +24,14 @@
       cursor: pointer; 
     }
     .popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
-    .popup-content { background: white; width: 92%; max-width: 380px; border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+    .popup-content { 
+      background: white; 
+      width: 92%; 
+      max-width: 380px; 
+      border-radius: 16px; 
+      padding: 20px; 
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+    }
     .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -3px 10px rgba(0,0,0,0.1); }
   </style>
 </head>
@@ -42,7 +49,7 @@
     <small>DAILY ORDERS: 38 | COMMISSION RATE: 1%</small>
   </div>
 
-  <!-- Grab Order Popup -->
+  <!-- Grab Order Popup - Like Reference -->
   <div class="popup" id="grabPopup">
     <div class="popup-content">
       <div style="text-align:right; cursor:pointer; font-size:28px;" onclick="closePopup()">×</div>
@@ -50,19 +57,19 @@
       <p><strong>ORDER ID:</strong> <span id="orderId"></span></p>
       
       <div style="display:flex; gap:15px; background:#f8f9fa; padding:12px; border-radius:10px;">
-        <img id="popupImg" style="width:80px; height:80px; border-radius:8px;">
-        <strong id="popupName" style="flex:1;"></strong>
+        <img id="popupImg" style="width:80px; height:80px; border-radius:8px; object-fit:cover;">
+        <strong id="popupName" style="flex:1; margin-top:5px;"></strong>
       </div>
 
-      <div style="margin-top:15px;">
+      <div style="margin-top:20px; line-height:2.2;">
         <div><strong>UNIT PRICE:</strong> <span id="unitPrice" style="float:right;"></span></div>
         <div><strong>ORDER QUANTITY:</strong> <span style="float:right;">1</span></div>
         <hr>
-        <div><strong>TOTAL:</strong> <span id="totalPrice" style="float:right; color:#0078ff;"></span></div>
-        <div><strong style="color:#e74c3c;">ORDER COMMISSION</strong> <span id="commission" style="float:right; color:#e74c3c;"></span></div>
+        <div><strong>TOTAL:</strong> <span id="totalPrice" style="float:right; color:#0078ff; font-weight:bold;"></span></div>
+        <div><strong style="color:#e74c3c;">ORDER COMMISSION</strong> <span id="commission" style="float:right; color:#e74c3c; font-weight:bold;"></span></div>
       </div>
 
-      <textarea placeholder="Add note here..." style="width:100%; height:70px; margin:15px 0; padding:10px; border:1px solid #ddd; border-radius:8px;"></textarea>
+      <textarea id="noteBox" placeholder="Add note here..." style="width:100%; height:80px; margin:15px 0; padding:10px; border:1px solid #ddd; border-radius:8px; resize:none;"></textarea>
 
       <button onclick="confirmOrder()" style="width:100%; padding:16px; background:#0078ff; color:white; border:none; border-radius:10px; font-size:17px;">
         SEND ORDER
@@ -115,7 +122,7 @@
         alert(`❌ Insufficient balance! You need at least $${currentProduct.price}`);
         return;
       }
-      alert(`✅ Order Completed! Commission: $${(currentProduct.price * userVIP.rate).toFixed(2)}`);
+      alert(`✅ Order Completed!\nCommission Earned: $${(currentProduct.price * userVIP.rate).toFixed(2)}`);
       document.getElementById('grabPopup').style.display = 'none';
     }
 
