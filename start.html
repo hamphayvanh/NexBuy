@@ -9,7 +9,7 @@
     body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 0; padding-bottom: 80px; }
     .header { background: #003087; color: white; padding: 15px; text-align: center; font-size: 21px; font-weight: bold; }
     .products { display: flex; overflow-x: auto; padding: 15px; gap: 12px; background: white; }
-    .product-card { min-width: 160px; text-align: center; cursor: pointer; }
+    .product-card { min-width: 160px; text-align: center; }
     .product-card img { width: 100%; height: 140px; object-fit: cover; border-radius: 12px; }
     .big-button {
       background: linear-gradient(135deg, #0078ff, #0055cc);
@@ -38,27 +38,23 @@
 <body>
   <div class="header">START</div>
 
-  <!-- Products -->
   <div class="products" id="productsScroll"></div>
 
   <div class="big-button" onclick="grabOrder()">
     START GETTING ORGANIZED
   </div>
 
-  <!-- VIP Info -->
   <div class="vip-perks" id="vipInfo">
     <strong>VIP0</strong> (Deposit 0)<br>
     <small>DAILY ORDERS: 38 | COMMISSION RATE: 1%</small>
   </div>
 
-  <!-- Stats -->
   <div class="stats">
-    <div class="card"><strong id="completed">0</strong><br>completed</div>
+    <div class="card"><strong>0</strong><br>completed</div>
     <div class="card"><strong>0</strong><br>everyone</div>
-    <div class="card"><strong id="remaining">38</strong><br>not completed</div>
+    <div class="card"><strong>38</strong><br>not completed</div>
   </div>
 
-  <!-- Balance -->
   <div class="balance-grid">
     <div class="card">$0.00<br><small>current balance</small></div>
     <div class="card">$0.00<br><small>order commission</small></div>
@@ -66,7 +62,6 @@
     <div class="card">100<br><small>credit</small></div>
   </div>
 
-  <!-- Description -->
   <div class="description">
     <h4>ORDER DESCRIPTION</h4>
     <ol>
@@ -123,12 +118,8 @@
     function loadProducts() {
       const container = document.getElementById('productsScroll');
       let html = '';
-      products.forEach((p, i) => {
-        html += `
-          <div class="product-card ${p.lucky ? 'lucky' : ''}" onclick="startOrder(${i})">
-            <img src="${p.img}" alt="${p.name}">
-            <h4>${p.name}</h4>
-          </div>`;
+      products.forEach(p => {
+        html += `<div class="product-card ${p.lucky ? 'lucky' : ''}"><img src="${p.img}" alt="${p.name}"><h4>${p.name}</h4></div>`;
       });
       container.innerHTML = html;
     }
@@ -140,35 +131,31 @@
       `;
     }
 
-    function startOrder(index) {
-      const product = products[index];
+    function grabOrder() {
+      const randomProduct = products[Math.floor(Math.random() * products.length)];
       let balance = parseFloat(localStorage.getItem('balance') || 0);
-      let dailyCount = parseInt(localStorage.getItem('dailyOrders') || 0);
 
-      if (dailyCount >= userVIP.daily) {
-        alert(`❌ Daily limit reached! (${userVIP.daily} orders for VIP${userVIP.level})`);
+      if (balance < randomProduct.price) {
+        alert(`❌ Insufficient balance! You need at least $${randomProduct.price} to start this order.`);
         return;
       }
 
-      if (balance < product.price) {
-        alert(`❌ Insufficient balance! You need at least $${product.price} to start this order.`);
-        return;
-      }
+      document.getElementById('popupName').textContent = randomProduct.name;
+      document.getElementById('popupImg').src = randomProduct.img;
+      document.getElementById('unitPrice').textContent = '$' + randomProduct.price;
+      document.getElementById('totalPrice').textContent = '$' + randomProduct.price;
+      document.getElementById('commission').textContent = '+$' + (randomProduct.price * (randomProduct.lucky ? 0.2 : userVIP.rate)).toFixed(2);
+      document.getElementById('orderId').textContent = 'NEX-' + Math.floor(100000 + Math.random() * 900000);
+      document.getElementById('grabPopup').style.display = 'flex';
+    }
 
-      // Process Order
-      balance -= product.price;
-      let commission = product.lucky 
-        ? product.price * (0.05 + Math.random() * 0.45) 
-        : product.price * userVIP.rate;
+    function closePopup() {
+      document.getElementById('grabPopup').style.display = 'none';
+    }
 
-      balance += product.price + commission;
-
-      localStorage.setItem('balance', balance.toFixed(2));
-      localStorage.setItem('dailyOrders', dailyCount + 1);
-
-      alert(`✅ Order Completed!\n\nProduct: ${product.name}\nCommission: $${commission.toFixed(2)}\nNew Balance: $${balance.toFixed(2)}`);
-
-      loadVIPInfo();
+    function sendOrder() {
+      alert("✅ Order Accepted Successfully!");
+      closePopup();
     }
 
     window.onload = () => {
