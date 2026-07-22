@@ -11,6 +11,17 @@
     .hero { height: 220px; background: url('https://picsum.photos/id/1015/1200/400') center/cover; position: relative; color: white; text-align: center; display: flex; align-items: center; justify-content: center; }
     .balance-bar { background: white; padding: 15px; display: flex; justify-content: space-around; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     .action { text-align: center; padding: 20px 10px; background: white; margin: 10px 15px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); cursor: pointer; }
+    
+    .vip-section { padding: 15px; }
+    .vip-card {
+      padding: 15px; margin-bottom: 12px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .vip0 { background: #e3f2fd; }
+    .vip1 { background: #fff9c4; }
+    .vip2 { background: #fce4ec; }
+    .vip3 { background: #263238; color: white; }
+
     .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -3px 10px rgba(0,0,0,0.1); }
   </style>
 </head>
@@ -39,6 +50,43 @@
     <div>
       <strong>$0.00</strong><br>
       <small>Commission Earned</small>
+    </div>
+  </div>
+
+  <!-- VIP Levels -->
+  <div class="vip-section">
+    <h3 style="padding:0 15px 10px;">MEMBER BENEFITS</h3>
+    
+    <div class="vip-card vip0">
+      <div>
+        <strong style="color:#0078ff;">VIP 0</strong> (Deposit 0)<br>
+        <small>DAILY ORDERS: 38<br>COMMISSION RATE: 1%</small>
+      </div>
+      <div style="font-size:28px;">👑</div>
+    </div>
+
+    <div class="vip-card vip1">
+      <div>
+        <strong style="color:#f57f17;">VIP 1</strong> (Deposit 1000)<br>
+        <small>DAILY ORDERS: 43<br>COMMISSION RATE: 1.5%</small>
+      </div>
+      <div style="font-size:28px;">👑</div>
+    </div>
+
+    <div class="vip-card vip2">
+      <div>
+        <strong style="color:#c2185b;">VIP 2</strong> (Deposit 3000)<br>
+        <small>DAILY ORDERS: 51<br>COMMISSION RATE: 2%</small>
+      </div>
+      <div style="font-size:28px;">👑</div>
+    </div>
+
+    <div class="vip-card vip3">
+      <div>
+        <strong>VIP 3</strong> (Deposit 5000)<br>
+        <small>DAILY ORDERS: 60<br>COMMISSION RATE: 2.5%</small>
+      </div>
+      <div style="font-size:28px;">👑</div>
     </div>
   </div>
 
