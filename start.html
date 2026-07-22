@@ -6,37 +6,14 @@
   <title>Start - NexBuy</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; }
+    body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 0; padding-bottom: 80px; }
     .header { background: #003087; color: white; padding: 15px; text-align: center; font-size: 21px; font-weight: bold; }
-    .products { 
-      display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-      gap: 15px; 
-      padding: 15px; 
-    }
-    .product-card { 
-      background: white; 
-      border-radius: 12px; 
-      overflow: hidden; 
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
-      text-align: center; 
-    }
-    .product-card img { width: 100%; height: 180px; object-fit: cover; }
-    .product-name { padding: 12px; font-size: 15px; font-weight: 600; color: #333; }
-    .big-button { 
-      background: #0078ff; 
-      color: white; 
-      padding: 16px; 
-      margin: 15px; 
-      border-radius: 12px; 
-      text-align: center; 
-      font-size: 18px; 
-      font-weight: bold; 
-      cursor: pointer; 
-    }
-    .vip-info { background: white; margin: 15px; padding: 15px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
-    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; }
-    .stat-card { background: white; padding: 12px; border-radius: 10px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; padding: 15px; }
+    .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; }
+    .product-card img { width: 100%; height: 160px; object-fit: cover; }
+    .big-button { background: #0078ff; color: white; padding: 16px; margin: 15px; border-radius: 12px; text-align: center; font-size: 18px; font-weight: bold; cursor: pointer; }
+    .popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
+    .popup-content { background: white; width: 92%; max-width: 380px; border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
     .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -3px 10px rgba(0,0,0,0.1); }
   </style>
 </head>
@@ -49,45 +26,30 @@
     START GETTING ORGANIZED
   </div>
 
-  <div class="vip-info" id="vipInfo">
-    <strong>VIP0</strong> (Deposit 0)<br>
-    <small>DAILY ORDERS: 38 | COMMISSION RATE: 1%</small>
-  </div>
-
-  <div class="stats">
-    <div class="stat-card"><strong>0</strong><br>completed</div>
-    <div class="stat-card"><strong>0</strong><br>everyone</div>
-    <div class="stat-card"><strong>38</strong><br>not completed</div>
-  </div>
-
-  <div class="stats">
-    <div class="stat-card">$0.00<br><small>current balance</small></div>
-    <div class="stat-card">$0.00<br><small>order commission</small></div>
-    <div class="stat-card">100<br><small>credit</small></div>
-  </div>
-
-  <div class="description" style="margin:15px; padding:15px; background:white; border-radius:12px;">
-    <h4>ORDER DESCRIPTION</h4>
-    <ol>
-      <li>Each account can match specified orders per day.</li>
-      <li>Commission corresponds to a percentage of the total amount.</li>
-      <li>The system matches goods through cloud computing based on market demand.</li>
-      <li>Assignments cannot be canceled once matched.</li>
-      <li>Commissions can be withdrawn once minimum requirements are met.</li>
-    </ol>
-  </div>
-
-  <!-- Popup -->
-  <div class="popup" id="grabPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center;">
-    <div style="background:white; width:90%; max-width:380px; border-radius:12px; padding:20px;">
-      <h3>GRAB ORDER</h3>
+  <div class="popup" id="grabPopup">
+    <div class="popup-content">
+      <div style="text-align:right; font-size:28px; cursor:pointer;" onclick="closePopup()">×</div>
+      <h3 style="margin:5px 0 15px;">GRAB ORDER</h3>
       <p><strong>ORDER ID:</strong> <span id="orderId"></span></p>
-      <img id="popupImg" style="width:100%; border-radius:8px;">
-      <h4 id="popupName"></h4>
-      <p><strong>UNIT PRICE:</strong> <span id="unitPrice"></span></p>
-      <p><strong>TOTAL:</strong> <span id="totalPrice"></span></p>
-      <p><strong>COMMISSION:</strong> <span id="commission"></span></p>
-      <button onclick="confirmOrder()" style="width:100%; padding:15px; background:#0078ff; color:white; border:none; border-radius:8px;">SEND ORDER</button>
+      
+      <div style="display:flex; gap:15px; background:#f8f9fa; padding:12px; border-radius:10px;">
+        <img id="popupImg" style="width:80px; height:80px; border-radius:8px; object-fit:cover;">
+        <div style="flex:1;"><strong id="popupName"></strong></div>
+      </div>
+
+      <div style="margin-top:15px; line-height:2;">
+        <div><strong>UNIT PRICE:</strong> <span id="unitPrice" style="float:right;"></span></div>
+        <div><strong>ORDER QUANTITY:</strong> <span style="float:right;">1</span></div>
+        <hr>
+        <div><strong>TOTAL:</strong> <span id="totalPrice" style="float:right; color:#0078ff;"></span></div>
+        <div><strong style="color:#e74c3c;">ORDER COMMISSION</strong> <span id="commission" style="float:right; color:#e74c3c;"></span></div>
+      </div>
+
+      <textarea placeholder="Add note here..." style="width:100%; height:80px; margin:15px 0; padding:10px; border:1px solid #ddd; border-radius:8px;"></textarea>
+
+      <button onclick="confirmOrder()" style="width:100%; padding:16px; background:#0078ff; color:white; border:none; border-radius:10px; font-size:17px;">
+        SEND ORDER
+      </button>
     </div>
   </div>
 
@@ -114,19 +76,19 @@
       const container = document.getElementById('productsScroll');
       let html = '';
       products.forEach(p => {
-        html += `<div class="product-card"><img src="${p.img}"><div class="product-name">${p.name}</div></div>`;
+        html += `<div class="product-card" onclick="grabOrderWithProduct('${p.name}', ${p.price}, '${p.img}')"><img src="${p.img}"><div class="product-name">${p.name}</div></div>`;
       });
       container.innerHTML = html;
     }
 
-    function grabOrder() {
-      currentProduct = products[Math.floor(Math.random() * products.length)];
-      document.getElementById('popupName').textContent = currentProduct.name;
-      document.getElementById('popupImg').src = currentProduct.img;
-      document.getElementById('unitPrice').textContent = '$' + currentProduct.price;
-      document.getElementById('totalPrice').textContent = '$' + currentProduct.price;
-      document.getElementById('commission').textContent = '+$' + (currentProduct.price * userVIP.rate).toFixed(2);
-      document.getElementById('orderId').textContent = 'NEX-' + Math.floor(100000 + Math.random() * 900000);
+    function grabOrderWithProduct(name, price, img) {
+      currentProduct = { name, price, img };
+      document.getElementById('popupName').textContent = name;
+      document.getElementById('popupImg').src = img;
+      document.getElementById('unitPrice').textContent = '$' + price;
+      document.getElementById('totalPrice').textContent = '$' + price;
+      document.getElementById('commission').textContent = '+$' + (price * userVIP.rate).toFixed(2);
+      document.getElementById('orderId').textContent = 'NEX-' + Math.floor(100000000 + Math.random() * 900000000);
       document.getElementById('grabPopup').style.display = 'flex';
     }
 
@@ -136,7 +98,11 @@
         alert(`❌ Insufficient balance! You need at least $${currentProduct.price}`);
         return;
       }
-      alert("✅ Order Completed!");
+      alert(`✅ Order Completed! Commission Earned: $${(currentProduct.price * userVIP.rate).toFixed(2)}`);
+      document.getElementById('grabPopup').style.display = 'none';
+    }
+
+    function closePopup() {
       document.getElementById('grabPopup').style.display = 'none';
     }
 
