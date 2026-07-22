@@ -8,18 +8,16 @@
   <style>
     body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 0; padding-bottom: 80px; }
     .header { background: #003087; color: white; padding: 15px; text-align: center; font-size: 21px; font-weight: bold; }
-    .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 15px; }
-    .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; cursor: pointer; }
-    .product-card img { width: 100%; height: 180px; object-fit: cover; }
-    .product-name { padding: 12px; font-weight: 600; color: #333; font-size: 14px; }
+    .current-product { text-align: center; margin: 20px 15px; background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .current-product img { width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; }
     .big-button { 
       background: #0078ff; 
       color: white; 
-      padding: 16px; 
+      padding: 18px; 
       margin: 15px; 
       border-radius: 12px; 
       text-align: center; 
-      font-size: 18px; 
+      font-size: 19px; 
       font-weight: bold; 
       cursor: pointer; 
     }
@@ -31,7 +29,10 @@
 <body>
   <div class="header">START</div>
 
-  <div class="products" id="productsScroll"></div>
+  <div class="current-product" id="currentProduct">
+    <img id="currentImg" src="">
+    <div id="currentName" style="font-weight:600; margin-top:10px; font-size:16px;"></div>
+  </div>
 
   <div class="big-button" onclick="grabOrder()">
     START GETTING ORGANIZED
@@ -85,33 +86,28 @@
     const products = [
       { name: "TOMEI DRAGON PENDANT, YELLOW GOLD 916", price: 239, img: "https://picsum.photos/id/64/600/400" },
       { name: "VINTAGE & PRELOVED GOLD JEWELRY", price: 182, img: "https://picsum.photos/id/201/600/400" },
-      { name: "VERSACE COASTER 4 PACK - TRIVET", price: 230, img: "https://picsum.photos/id/301/600/400" },
+      { name: "VERSACE COASTER 4 PACK", price: 230, img: "https://picsum.photos/id/301/600/400" },
       { name: "VERSACE BOWL WITH FOOT", price: 258, img: "https://picsum.photos/id/180/600/400" },
-      { name: "VERSACE SUGAR BOWL 3", price: 160, img: "https://picsum.photos/id/133/600/400" },
-      { name: "VERSACE CUP SAUCER 4 LOW SET", price: 230, img: "https://picsum.photos/id/251/600/400" },
       { name: "WOMEN SUMMER WEAR", price: 189, img: "https://picsum.photos/id/1015/600/400" },
-      { name: "NO. 5 BY CHANEL FOR WOMEN", price: 124, img: "https://picsum.photos/id/133/600/400" },
+      { name: "NO. 5 BY CHANEL", price: 124, img: "https://picsum.photos/id/133/600/400" },
       { name: "SHORT SLEEVE SHORT DRESS", price: 126, img: "https://picsum.photos/id/64/600/400" },
-      { name: "WALL ART FOR OFFICE", price: 110, img: "https://picsum.photos/id/201/600/400" },
-      { name: "FOSSIL WOMEN'S JOLIE LEATHER CROSSBODY", price: 240, img: "https://picsum.photos/id/180/600/400" },
-      { name: "NDG JEANNE MINI BANDANA WOMEN'S HANDBAG", price: 265, img: "https://picsum.photos/id/251/600/400" },
-      { name: "PRELOVED LOUIS VUITTON ITEM", price: 140, img: "https://picsum.photos/id/301/600/400" },
-      { name: "SAINT LAURENT JAMIE 4.3 CHAIN BAG", price: 240, img: "https://picsum.photos/id/64/600/400" },
-      { name: "CHANEL COCO MADEMOISELLE INTENSE", price: 255, img: "https://picsum.photos/id/201/600/400" },
-      { name: "WITHINGS SCANWATCH 2", price: 650, img: "https://picsum.photos/id/180/600/400" }
+      { name: "FOSSIL WOMEN'S JOLIE BAG", price: 240, img: "https://picsum.photos/id/251/600/400" }
     ];
 
-    function loadProducts() {
-      const container = document.getElementById('productsScroll');
-      let html = '';
-      products.forEach(p => {
-        html += `<div class="product-card"><img src="${p.img}"><div class="product-name">${p.name}</div></div>`;
-      });
-      container.innerHTML = html;
+    function loadCurrentProduct() {
+      currentProduct = products[Math.floor(Math.random() * products.length)];
+      document.getElementById('currentImg').src = currentProduct.img;
+      document.getElementById('currentName').textContent = currentProduct.name;
     }
 
     function grabOrder() {
-      currentProduct = products[Math.floor(Math.random() * products.length)];
+      // Pick a different product for the order popup
+      let orderProduct = products[Math.floor(Math.random() * products.length)];
+      while (orderProduct === currentProduct) {
+        orderProduct = products[Math.floor(Math.random() * products.length)];
+      }
+      currentProduct = orderProduct;
+
       document.getElementById('popupName').textContent = currentProduct.name;
       document.getElementById('popupImg').src = currentProduct.img;
       document.getElementById('unitPrice').textContent = '$' + currentProduct.price;
@@ -129,13 +125,16 @@
       }
       alert(`✅ Order Completed!\nCommission Earned: $${(currentProduct.price * userVIP.rate).toFixed(2)}`);
       document.getElementById('grabPopup').style.display = 'none';
+      loadCurrentProduct(); // Change the main screen product
     }
 
     function closePopup() {
       document.getElementById('grabPopup').style.display = 'none';
     }
 
-    window.onload = loadProducts;
+    window.onload = () => {
+      loadCurrentProduct();
+    };
   </script>
 </body>
 </html>
