@@ -6,52 +6,37 @@
   <title>Start - NexBuy</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
   <style>
-    body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 0; padding-bottom: 80px; }
+    body { font-family: Arial, sans-serif; margin: 0; background: #f8f9fa; }
     .header { background: #003087; color: white; padding: 15px; text-align: center; font-size: 21px; font-weight: bold; }
     .products { 
       display: grid; 
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
       gap: 15px; 
       padding: 15px; 
-      background: white; 
     }
     .product-card { 
       background: white; 
       border-radius: 12px; 
       overflow: hidden; 
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
       text-align: center; 
-      transition: transform 0.2s; 
     }
-    .product-card:hover { transform: translateY(-5px); }
     .product-card img { width: 100%; height: 180px; object-fit: cover; }
-    .product-name { padding: 12px; font-weight: 600; color: #333; font-size: 15px; }
-    .big-button {
-      background: linear-gradient(135deg, #0078ff, #0055cc);
-      color: white;
-      padding: 18px;
-      margin: 15px;
-      border-radius: 12px;
-      text-align: center;
-      font-size: 19px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0,120,255,0.4);
-    }
-    .vip-perks, .stats, .balance-grid, .description {
-      margin: 15px; padding: 15px; background: white; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
-    .lucky-badge {
-      position: absolute; 
-      top: 10px; 
-      right: 10px; 
-      background: #ffd700; 
-      color: black; 
-      padding: 4px 12px; 
-      border-radius: 20px; 
-      font-size: 12px; 
+    .product-name { padding: 12px; font-size: 15px; font-weight: 600; color: #333; }
+    .big-button { 
+      background: #0078ff; 
+      color: white; 
+      padding: 16px; 
+      margin: 15px; 
+      border-radius: 12px; 
+      text-align: center; 
+      font-size: 18px; 
       font-weight: bold; 
+      cursor: pointer; 
     }
+    .vip-info { background: white; margin: 15px; padding: 15px; border-radius: 12px; box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 15px; }
+    .stat-card { background: white; padding: 12px; border-radius: 10px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
     .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -3px 10px rgba(0,0,0,0.1); }
   </style>
 </head>
@@ -64,25 +49,24 @@
     START GETTING ORGANIZED
   </div>
 
-  <div class="vip-perks" id="vipInfo">
+  <div class="vip-info" id="vipInfo">
     <strong>VIP0</strong> (Deposit 0)<br>
     <small>DAILY ORDERS: 38 | COMMISSION RATE: 1%</small>
   </div>
 
   <div class="stats">
-    <div class="card"><strong>0</strong><br>completed</div>
-    <div class="card"><strong>0</strong><br>everyone</div>
-    <div class="card"><strong>38</strong><br>not completed</div>
+    <div class="stat-card"><strong>0</strong><br>completed</div>
+    <div class="stat-card"><strong>0</strong><br>everyone</div>
+    <div class="stat-card"><strong>38</strong><br>not completed</div>
   </div>
 
-  <div class="balance-grid">
-    <div class="card">$0.00<br><small>current balance</small></div>
-    <div class="card">$0.00<br><small>order commission</small></div>
-    <div class="card">$0.00<br><small>frozen</small></div>
-    <div class="card">100<br><small>credit</small></div>
+  <div class="stats">
+    <div class="stat-card">$0.00<br><small>current balance</small></div>
+    <div class="stat-card">$0.00<br><small>order commission</small></div>
+    <div class="stat-card">100<br><small>credit</small></div>
   </div>
 
-  <div class="description">
+  <div class="description" style="margin:15px; padding:15px; background:white; border-radius:12px;">
     <h4>ORDER DESCRIPTION</h4>
     <ol>
       <li>Each account can match specified orders per day.</li>
@@ -93,27 +77,17 @@
     </ol>
   </div>
 
-  <!-- Grab Order Popup -->
-  <div class="popup" id="grabPopup">
-    <div class="popup-content">
-      <span onclick="closePopup()" style="position:absolute; top:10px; right:15px; font-size:28px; cursor:pointer;">×</span>
+  <!-- Popup -->
+  <div class="popup" id="grabPopup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:white; width:90%; max-width:380px; border-radius:12px; padding:20px;">
       <h3>GRAB ORDER</h3>
-      <p><strong>ORDER ID:</strong> <span id="orderId">NEX-785861</span></p>
-      
-      <div style="display:flex; gap:15px; margin:15px 0;">
-        <img id="popupImg" src="" style="width:80px; height:80px; border-radius:8px;">
-        <div><h4 id="popupName">CHLOÉ AQUA SANDALS</h4></div>
-      </div>
-
-      <p><strong>UNIT PRICE:</strong> <span id="unitPrice" style="float:right;">$124</span></p>
-      <p><strong>ORDER QUANTITY:</strong> <span style="float:right;">1</span></p>
-      <hr>
-      <p><strong>TOTAL:</strong> <span id="totalPrice" style="float:right; color:#0078ff; font-size:18px;">$124</span></p>
-      <p><strong>ORDER COMMISSION:</strong> <span id="commission" style="float:right; color:#28a745;">+$1.24</span></p>
-
-      <button onclick="confirmOrder()" style="width:100%; padding:16px; background:#0078ff; color:white; border:none; border-radius:10px; font-size:17px; margin-top:15px;">
-        SEND ORDER
-      </button>
+      <p><strong>ORDER ID:</strong> <span id="orderId"></span></p>
+      <img id="popupImg" style="width:100%; border-radius:8px;">
+      <h4 id="popupName"></h4>
+      <p><strong>UNIT PRICE:</strong> <span id="unitPrice"></span></p>
+      <p><strong>TOTAL:</strong> <span id="totalPrice"></span></p>
+      <p><strong>COMMISSION:</strong> <span id="commission"></span></p>
+      <button onclick="confirmOrder()" style="width:100%; padding:15px; background:#0078ff; color:white; border:none; border-radius:8px;">SEND ORDER</button>
     </div>
   </div>
 
@@ -130,40 +104,28 @@
     let currentProduct = null;
 
     const products = [
-      { name: "CHLOÉ AQUA SANDALS", price: 124, img: "https://picsum.photos/id/64/600/400", lucky: false },
-      { name: "LA PRAIRIE PURE GOLD", price: 289, img: "https://picsum.photos/id/201/600/400", lucky: true },
-      { name: "KENZO MEN'S T-SHIRT", price: 89, img: "https://picsum.photos/id/301/600/400", lucky: false },
-      { name: "ULTRABOOST SHOES", price: 179, img: "https://picsum.photos/id/180/600/400", lucky: true }
+      { name: "CHLOÉ AQUA SANDALS", price: 124, img: "https://picsum.photos/id/64/600/400" },
+      { name: "LA PRAIRIE PURE GOLD", price: 289, img: "https://picsum.photos/id/201/600/400" },
+      { name: "KENZO MEN'S T-SHIRT", price: 89, img: "https://picsum.photos/id/301/600/400" },
+      { name: "ULTRABOOST SHOES", price: 179, img: "https://picsum.photos/id/180/600/400" }
     ];
 
     function loadProducts() {
       const container = document.getElementById('productsScroll');
       let html = '';
       products.forEach(p => {
-        html += `
-          <div class="product-card ${p.lucky ? 'lucky' : ''}">
-            <img src="${p.img}" alt="${p.name}">
-            <div class="product-name">${p.name}</div>
-          </div>`;
+        html += `<div class="product-card"><img src="${p.img}"><div class="product-name">${p.name}</div></div>`;
       });
       container.innerHTML = html;
     }
 
-    function loadVIPInfo() {
-      document.getElementById('vipInfo').innerHTML = `
-        <strong>VIP${userVIP.level}</strong> (Deposit ${userVIP.level * 1000})<br>
-        <small>DAILY ORDERS: ${userVIP.daily} | COMMISSION RATE: ${(userVIP.rate * 100).toFixed(1)}%</small>
-      `;
-    }
-
     function grabOrder() {
       currentProduct = products[Math.floor(Math.random() * products.length)];
-      
       document.getElementById('popupName').textContent = currentProduct.name;
       document.getElementById('popupImg').src = currentProduct.img;
       document.getElementById('unitPrice').textContent = '$' + currentProduct.price;
       document.getElementById('totalPrice').textContent = '$' + currentProduct.price;
-      document.getElementById('commission').textContent = '+$' + (currentProduct.price * (currentProduct.lucky ? 0.2 : userVIP.rate)).toFixed(2);
+      document.getElementById('commission').textContent = '+$' + (currentProduct.price * userVIP.rate).toFixed(2);
       document.getElementById('orderId').textContent = 'NEX-' + Math.floor(100000 + Math.random() * 900000);
       document.getElementById('grabPopup').style.display = 'flex';
     }
@@ -171,27 +133,14 @@
     function confirmOrder() {
       let balance = parseFloat(localStorage.getItem('balance') || 0);
       if (balance < currentProduct.price) {
-        alert(`❌ Insufficient balance! You need at least $${currentProduct.price} to start this order.`);
-        closePopup();
+        alert(`❌ Insufficient balance! You need at least $${currentProduct.price}`);
         return;
       }
-      let commission = currentProduct.lucky 
-        ? currentProduct.price * (0.05 + Math.random() * 0.45) 
-        : currentProduct.price * userVIP.rate;
-      balance = balance - currentProduct.price + currentProduct.price + commission;
-      localStorage.setItem('balance', balance.toFixed(2));
-      alert(`✅ Order Completed!\nProduct: ${currentProduct.name}\nCommission Earned: $${commission.toFixed(2)}`);
-      closePopup();
-    }
-
-    function closePopup() {
+      alert("✅ Order Completed!");
       document.getElementById('grabPopup').style.display = 'none';
     }
 
-    window.onload = () => {
-      loadProducts();
-      loadVIPInfo();
-    };
+    window.onload = loadProducts;
   </script>
 </body>
 </html>
