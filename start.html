@@ -11,7 +11,7 @@
     .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; padding: 15px; }
     .product-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1); text-align: center; cursor: pointer; }
     .product-card img { width: 100%; height: 180px; object-fit: cover; }
-    .product-name { padding: 12px; font-weight: 600; color: #333; }
+    .product-name { padding: 12px; font-weight: 600; color: #333; font-size: 14px; }
     .big-button { 
       background: #0078ff; 
       color: white; 
@@ -85,12 +85,20 @@
     const products = [
       { name: "TOMEI DRAGON PENDANT, YELLOW GOLD 916", price: 239, img: "https://picsum.photos/id/64/600/400" },
       { name: "VINTAGE & PRELOVED GOLD JEWELRY", price: 182, img: "https://picsum.photos/id/201/600/400" },
-      { name: "VERSACE COASTER 4 PACK", price: 230, img: "https://picsum.photos/id/301/600/400" },
+      { name: "VERSACE COASTER 4 PACK - TRIVET", price: 230, img: "https://picsum.photos/id/301/600/400" },
       { name: "VERSACE BOWL WITH FOOT", price: 258, img: "https://picsum.photos/id/180/600/400" },
+      { name: "VERSACE SUGAR BOWL 3", price: 160, img: "https://picsum.photos/id/133/600/400" },
+      { name: "VERSACE CUP SAUCER 4 LOW SET", price: 230, img: "https://picsum.photos/id/251/600/400" },
       { name: "WOMEN SUMMER WEAR", price: 189, img: "https://picsum.photos/id/1015/600/400" },
-      { name: "NO. 5 BY CHANEL", price: 124, img: "https://picsum.photos/id/133/600/400" },
-      { name: "SHORT SLEEVE SHORT DRESS", price: 126, img: "https://picsum.photos/id/201/600/400" },
-      { name: "FOSSIL WOMEN'S JOLIE BAG", price: 240, img: "https://picsum.photos/id/251/600/400" }
+      { name: "NO. 5 BY CHANEL FOR WOMEN", price: 124, img: "https://picsum.photos/id/133/600/400" },
+      { name: "SHORT SLEEVE SHORT DRESS", price: 126, img: "https://picsum.photos/id/64/600/400" },
+      { name: "WALL ART FOR OFFICE", price: 110, img: "https://picsum.photos/id/201/600/400" },
+      { name: "FOSSIL WOMEN'S JOLIE LEATHER CROSSBODY", price: 240, img: "https://picsum.photos/id/180/600/400" },
+      { name: "NDG JEANNE MINI BANDANA WOMEN'S HANDBAG", price: 265, img: "https://picsum.photos/id/251/600/400" },
+      { name: "PRELOVED LOUIS VUITTON ITEM", price: 140, img: "https://picsum.photos/id/301/600/400" },
+      { name: "SAINT LAURENT JAMIE 4.3 CHAIN BAG", price: 240, img: "https://picsum.photos/id/64/600/400" },
+      { name: "CHANEL COCO MADEMOISELLE INTENSE", price: 255, img: "https://picsum.photos/id/201/600/400" },
+      { name: "WITHINGS SCANWATCH 2", price: 650, img: "https://picsum.photos/id/180/600/400" }
     ];
 
     function loadProducts() {
@@ -119,7 +127,7 @@
         alert(`❌ Insufficient balance! You need at least $${currentProduct.price}`);
         return;
       }
-      alert(`✅ Order Completed! Commission: $${(currentProduct.price * userVIP.rate).toFixed(2)}`);
+      alert(`✅ Order Completed!\nCommission Earned: $${(currentProduct.price * userVIP.rate).toFixed(2)}`);
       document.getElementById('grabPopup').style.display = 'none';
     }
 
