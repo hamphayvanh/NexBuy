@@ -24,14 +24,7 @@
       cursor: pointer; 
     }
     .popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; justify-content: center; align-items: center; }
-    .popup-content { 
-      background: white; 
-      width: 92%; 
-      max-width: 380px; 
-      border-radius: 16px; 
-      padding: 20px; 
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
-    }
+    .popup-content { background: white; width: 92%; max-width: 380px; border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
     .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -3px 10px rgba(0,0,0,0.1); }
   </style>
 </head>
@@ -49,7 +42,7 @@
     <small>DAILY ORDERS: 38 | COMMISSION RATE: 1%</small>
   </div>
 
-  <!-- Grab Order Popup - Like Reference -->
+  <!-- Grab Order Popup -->
   <div class="popup" id="grabPopup">
     <div class="popup-content">
       <div style="text-align:right; cursor:pointer; font-size:28px;" onclick="closePopup()">×</div>
@@ -69,7 +62,7 @@
         <div><strong style="color:#e74c3c;">ORDER COMMISSION</strong> <span id="commission" style="float:right; color:#e74c3c; font-weight:bold;"></span></div>
       </div>
 
-      <textarea id="noteBox" placeholder="Add note here..." style="width:100%; height:80px; margin:15px 0; padding:10px; border:1px solid #ddd; border-radius:8px; resize:none;"></textarea>
+      <textarea placeholder="Add note here..." style="width:100%; height:80px; margin:15px 0; padding:10px; border:1px solid #ddd; border-radius:8px; resize:none;"></textarea>
 
       <button onclick="confirmOrder()" style="width:100%; padding:16px; background:#0078ff; color:white; border:none; border-radius:10px; font-size:17px;">
         SEND ORDER
@@ -90,10 +83,14 @@
     let currentProduct = null;
 
     const products = [
-      { name: "CHLOÉ AQUA SANDALS", price: 124, img: "https://picsum.photos/id/64/600/400" },
-      { name: "LA PRAIRIE PURE GOLD", price: 289, img: "https://picsum.photos/id/201/600/400" },
-      { name: "KENZO MEN'S T-SHIRT", price: 89, img: "https://picsum.photos/id/301/600/400" },
-      { name: "ULTRABOOST SHOES", price: 179, img: "https://picsum.photos/id/180/600/400" }
+      { name: "TOMEI DRAGON PENDANT, YELLOW GOLD 916", price: 239, img: "https://picsum.photos/id/64/600/400" },
+      { name: "VINTAGE & PRELOVED GOLD JEWELRY", price: 182, img: "https://picsum.photos/id/201/600/400" },
+      { name: "VERSACE COASTER 4 PACK", price: 230, img: "https://picsum.photos/id/301/600/400" },
+      { name: "VERSACE BOWL WITH FOOT", price: 258, img: "https://picsum.photos/id/180/600/400" },
+      { name: "WOMEN SUMMER WEAR", price: 189, img: "https://picsum.photos/id/1015/600/400" },
+      { name: "NO. 5 BY CHANEL", price: 124, img: "https://picsum.photos/id/133/600/400" },
+      { name: "SHORT SLEEVE SHORT DRESS", price: 126, img: "https://picsum.photos/id/201/600/400" },
+      { name: "FOSSIL WOMEN'S JOLIE BAG", price: 240, img: "https://picsum.photos/id/251/600/400" }
     ];
 
     function loadProducts() {
@@ -122,7 +119,7 @@
         alert(`❌ Insufficient balance! You need at least $${currentProduct.price}`);
         return;
       }
-      alert(`✅ Order Completed!\nCommission Earned: $${(currentProduct.price * userVIP.rate).toFixed(2)}`);
+      alert(`✅ Order Completed! Commission: $${(currentProduct.price * userVIP.rate).toFixed(2)}`);
       document.getElementById('grabPopup').style.display = 'none';
     }
 
