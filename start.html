@@ -8,8 +8,8 @@
   <style>
     body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 0; padding-bottom: 80px; }
     .header { background: #003087; color: white; padding: 15px; text-align: center; font-size: 21px; font-weight: bold; }
-    .current-product { text-align: center; margin: 20px 15px; background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    .current-product img { width: 100%; max-height: 220px; object-fit: cover; border-radius: 12px; }
+    .featured { text-align: center; margin: 20px 15px; background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .featured img { width: 100%; max-height: 250px; object-fit: cover; border-radius: 12px; }
     .big-button { 
       background: #0078ff; 
       color: white; 
@@ -29,9 +29,9 @@
 <body>
   <div class="header">START</div>
 
-  <div class="current-product" id="currentProduct">
-    <img id="currentImg" src="">
-    <div id="currentName" style="font-weight:600; margin-top:10px; font-size:16px;"></div>
+  <div class="featured" id="featuredProduct">
+    <img id="featuredImg" src="">
+    <div id="featuredName" style="font-weight:600; margin-top:10px; font-size:16px;"></div>
   </div>
 
   <div class="big-button" onclick="grabOrder()">
@@ -94,25 +94,24 @@
       { name: "FOSSIL WOMEN'S JOLIE BAG", price: 240, img: "https://picsum.photos/id/251/600/400" }
     ];
 
-    function loadCurrentProduct() {
+    function loadFeaturedProduct() {
       currentProduct = products[Math.floor(Math.random() * products.length)];
-      document.getElementById('currentImg').src = currentProduct.img;
-      document.getElementById('currentName').textContent = currentProduct.name;
+      document.getElementById('featuredImg').src = currentProduct.img;
+      document.getElementById('featuredName').textContent = currentProduct.name;
     }
 
     function grabOrder() {
-      // Pick a different product for the order popup
+      // Pick a different product for order
       let orderProduct = products[Math.floor(Math.random() * products.length)];
-      while (orderProduct === currentProduct) {
+      while (orderProduct.name === currentProduct.name) {
         orderProduct = products[Math.floor(Math.random() * products.length)];
       }
-      currentProduct = orderProduct;
 
-      document.getElementById('popupName').textContent = currentProduct.name;
-      document.getElementById('popupImg').src = currentProduct.img;
-      document.getElementById('unitPrice').textContent = '$' + currentProduct.price;
-      document.getElementById('totalPrice').textContent = '$' + currentProduct.price;
-      document.getElementById('commission').textContent = '+$' + (currentProduct.price * userVIP.rate).toFixed(2);
+      document.getElementById('popupName').textContent = orderProduct.name;
+      document.getElementById('popupImg').src = orderProduct.img;
+      document.getElementById('unitPrice').textContent = '$' + orderProduct.price;
+      document.getElementById('totalPrice').textContent = '$' + orderProduct.price;
+      document.getElementById('commission').textContent = '+$' + (orderProduct.price * userVIP.rate).toFixed(2);
       document.getElementById('orderId').textContent = 'NEX-' + Math.floor(100000 + Math.random() * 900000);
       document.getElementById('grabPopup').style.display = 'flex';
     }
@@ -123,18 +122,15 @@
         alert(`❌ Insufficient balance! You need at least $${currentProduct.price}`);
         return;
       }
-      alert(`✅ Order Completed!\nCommission Earned: $${(currentProduct.price * userVIP.rate).toFixed(2)}`);
+      alert(`✅ Order Completed!`);
       document.getElementById('grabPopup').style.display = 'none';
-      loadCurrentProduct(); // Change the main screen product
     }
 
     function closePopup() {
       document.getElementById('grabPopup').style.display = 'none';
     }
 
-    window.onload = () => {
-      loadCurrentProduct();
-    };
+    window.onload = loadFeaturedProduct;
   </script>
 </body>
 </html>
